@@ -53,12 +53,11 @@ class TestController extends Controller
         $str = rtrim($str,'&');
         // 3 计算签名   https://docs.open.alipay.com/291/106118
         $key = storage_path('keys/app_priv');
+
         $priKey = file_get_contents($key);
+        // dd($priKey);
         $res = openssl_get_privatekey($priKey);
-        var_dump($priKey);echo '</br>';die;
-        var_dump($str);
-        var_dump($sign);
-        var_dump($res);die;
+        // var_dump($res);die;
         openssl_sign($str, $sign, $res, OPENSSL_ALGO_SHA256);
         $sign = base64_encode($sign);
         $param['sign'] = $sign;
