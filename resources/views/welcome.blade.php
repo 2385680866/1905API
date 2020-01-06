@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    1905API
+                    client
                 </div>
 
                 <div class="links">
