@@ -17,3 +17,6 @@ Route::get('/', function () {
 Route::get("test/pay","TestController@alipay"); //去支付
 Route::get("test/alipay/return","Alpay\PayController@aliReturn");
 Route::get("test/alipay/notify","Alpay\PayController@notify");
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
