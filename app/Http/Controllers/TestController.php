@@ -72,5 +72,4 @@ class TestController extends Controller
         //echo $url;die;
         header("Location:".$url);
     }
-
 }
