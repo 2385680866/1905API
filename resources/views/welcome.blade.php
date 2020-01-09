@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    <h3 style="color:red">1905-API-LARAVEL</h3>
+                    <h3 style="color:red">1905-API</h3>
                 </div>
 
                 <div class="links">
