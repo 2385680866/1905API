@@ -72,4 +72,13 @@ class TestController extends Controller
         //echo $url;die;
         header("Location:".$url);
     }
+    /**
+     * 自动上线函数
+     * @return [type] [description]
+     */
+    public function gitPull()
+    {
+        $cmd="cd /wwwroot/1905/1905api git pull";
+        shell_exec($cmd);
+    }
 }

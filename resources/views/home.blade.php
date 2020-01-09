@@ -15,6 +15,10 @@
                     @endif
 
                     You are logged in!
+                        <br>
+                        <a href="/user/addkey">添加公钥</a>
+                        <a href="/user/decrypt">解密数据</a>
+                        <a href="/sign/online">在线验签</a>
                 </div>
             </div>
         </div>
