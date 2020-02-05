@@ -4,32 +4,22 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\CommonModel;
 
 class UserController extends Controller
 {
     /**
      * 用户注册
+     * @param  Request $request [description]
+     * @return [type]           [description]
      */
-    public function reg(Request $request)
+    public function reg()
     {
-        echo '<pre>';print_r($request->input());echo '</pre>';
-        //验证用户名 验证email 验证手机号
-        $pass1 = $request->input('pass1');
-        $pass2 = $request->input('pass2');
-        if($pass1 != $pass2){
-            die("两次输入的密码不一致");
-        }
-        $password = password_hash($pass1,PASSWORD_BCRYPT);
-        $data = [
-            'email'         => $request->input('email'),
-            'name'          => $request->input('name'),
-            'password'      => $password,
-            'mobile'        => $request->input('mobile'),
-            'last_login'    => time(),
-            'last_ip'       => $_SERVER['REMOTE_ADDR'],     //获取远程IP
-        ];
-        $uid = UserModel::insertGetId($data);
-        var_dump($uid);
+        //请求地址
+        $url="http://1905passport.com/api/reg";
+        //发送请求
+        $response=CommonModel::curlPost($url,$_POST);
+        dd($response);
     }
     /**
      * 用户登录接口
@@ -38,44 +28,42 @@ class UserController extends Controller
      */
     public function login(Request $request)
     {
-        $name = $request->input('name');
-        $pass = $request->input('pass');
-        $u = UserModel::where(['name'=>$name])->first();
-        if($u){
-            //验证密码
-            if( password_verify($pass,$u->password) ){
-                // 登录成功
-                //echo '登录成功';
-                //生成token
-                $token = Str::random(32);
-                $response = [
-                    'errno' => 0,
-                    'msg'   => 'ok',
-                    'data'  => [
-                        'token' => $token
-                    ]
-                ];
-            }else{
-                $response = [
-                    'errno' => 400003,
-                    'msg'   => '密码不正确'
-                ];
-            }
-        }else{
-            $response = [
-                'errno' => 400004,
-                'msg'   => '用户不存在'
-            ];
-        }
-        return $response;
+        //请求地址
+        $url="http://1905passport.com/api/login";
+        //发送请求
+        $response=CommonModel::curlPost($url,$_POST);
+        dd($response);
     }
     /**
-     * 获取用户列表
-     * 2020年1月2日16:32:07
+     * 用户列表
+     * @return [type] [description]
      */
     public function userList()
     {
-        $list = UserModel::all();
-        echo '<pre>';print_r($list->toArray());echo '</pre>';
+        //接收数据
+        $uid=$_SERVER['HTTP_UID'];
+        $token=$_SERVER['HTTP_TOKEN'];
+        $header=[
+            "uid:".$uid,
+            "token:".$token
+        ];
+        //请求地址
+        $url="http://1905passport.com/api/list";
+        //发送请求
+        CommonModel::curlGet($url,$header);
+    }
+    /**
+     * 鉴权
+     * @return [type] [description]
+     */
+    public function auth()
+    {
+        $uid=$_SERVER['HTTP_UID'];
+        $token=$_SERVER['HTTP_TOKEN'];
+        //请求地址
+        $url="http://1905passport.com/api/auth";
+        //发送请求
+        $response=CommonModel::curlPost($url,['uid'=>$uid,"token"=>$token]);
+        dd($response);
     }
 }

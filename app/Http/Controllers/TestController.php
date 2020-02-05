@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 
 class TestController extends Controller
 {
@@ -80,5 +81,28 @@ class TestController extends Controller
     {
         $cmd="cd /wwwroot/1905/1905api git pull";
         shell_exec($cmd);
+    }
+    /**
+     * 防刷
+     * [postman description]
+     * @return [type] [description]
+     */
+    public function postman()
+    {
+        //获取token
+        dd(1111);
+        $token=$_SERVER['HTTP_TOKEN'];
+        $request_uri=$_SERVER['REQUEST_URI'];
+        $url_hash=md5($token . $request_uri);
+        $key='count:url'.$url_hash;
+        $time=10;
+        $count=Redis::get($key);
+        echo "当前接口访问次数:".$count;echo "</br>";
+        if($count>=5){
+            echo "请勿平凡操作,请 $time 秒后再试";
+            Redis::expire($key,$time);die;
+        }
+        $count=Redis::incr($key);
+        echo "count:".$count;die;
     }
 }

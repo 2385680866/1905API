@@ -15,6 +15,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+
+Route::get("postman","TestController@postman")->middleware("check.auth"); //防刷
+
+
+
 Route::get("gitpull","TestController@gitPull"); //自动上线
 Route::get("test/pay","TestController@alipay"); //去支付
 Route::get("test/alipay/return","Alpay\PayController@aliReturn"); //同步
@@ -36,3 +43,14 @@ Route::post("user/addkey","Admin\UserPubKeyController@addSSHKey2"); //添加公�
 Route::middleware(['token'])->group(function () {
 	Auth::routes();
 });
+//商品管理
+Route::get("admin/goods/create","Goods\GoodsController@create"); //商品添加
+Route::get("admin/goods/index","Goods\GoodsController@index"); //商品列表
+Route::get("admin/goods/edit","Goods\GoodsController@edit"); //商品修改
+//订单管理
+Route::get("admin/order/index","Admin\OrderController@index"); //订单管理
+
+
+$router->resource('goods', GoodsController::class);
+
+

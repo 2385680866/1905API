@@ -16,7 +16,12 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-// 接口
-Route::post('/user/reg','Api\TestController@reg');          //用户注册
-Route::post('user/login','Api\TestController@login');      //用户登录
-Route::get('/user/list','Api\TestController@userList')->middleware('token');      //用户列表
+// 用户接口
+Route::post('/reg','Api\UserController@reg');     //用户注册
+Route::post('/login','Api\UserController@login'); //用户登录
+Route::get('/list','Api\UserController@userList')->middleware("token");//用户列表
+Route::post('/auth','Api\UserController@auth')->middleware("token","check.auth");    //鉴权
+
+
+
+
