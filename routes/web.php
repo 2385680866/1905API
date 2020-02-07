@@ -16,11 +16,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::get("test/check","TestController@md5"); //签名
 
 Route::get("postman","TestController@postman")->middleware("check.auth"); //防刷
 
-
+Route::get("test/md5","TestController@MD5"); //测试
 
 Route::get("gitpull","TestController@gitPull"); //自动上线
 Route::get("test/pay","TestController@alipay"); //去支付

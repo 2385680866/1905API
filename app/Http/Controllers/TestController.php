@@ -7,6 +7,19 @@ use Illuminate\Support\Facades\Redis;
 
 class TestController extends Controller
 {
+    /**签名
+     * [MD5 description]
+     */
+    public function md5()
+    {
+        $data = "Hello world";
+        $key = "1905";
+        $sign = md5($data . $key);
+        $url="http://1905passport.com/test/check?data=".$data.'&sign='.$sign;
+        $response=file_get_contents($url);
+
+        echo $response;
+    }
    	public function alipay()
     {
         $ali_gateway = 'https://openapi.alipaydev.com/gateway.do';  //支付网关
