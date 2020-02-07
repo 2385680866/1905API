@@ -18,6 +18,7 @@ Route::get('/', function () {
 //测试
 Route::get("test/md5SignGet","TestController@md5SignGet"); //签名测试 
 Route::get("test/md5SignPost","TestController@md5SignPost"); //签名测试
+Route::get("test/rsaSign","TestController@rsaSign"); //公钥签名测试
 Route::get("test/md5","TestController@MD5"); //测试
 
 

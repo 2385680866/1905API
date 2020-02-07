@@ -8,6 +8,26 @@ use GuzzleHttp\Client;
 
 class TestController extends Controller
 {
+    /**公钥签名
+     * [resSign description]
+     * @return [type] [description]
+     */
+    public function rsaSign()
+    {
+        $data = "fule";//发送的数据
+        //计算签名
+        $path = storage_path("keys/testpriv.key"); //私钥的路径
+        $pkeyid = openssl_pkey_get_private("file://" . $path);
+        //计算签名得到 signature
+        openssl_sign($data, $signature, $pkeyid);
+        openssl_free_key($pkeyid);
+        //使用base64
+        $sign_str = base64_encode($signature);
+        echo "base64_encode 后的签名:" .$sign_str;
+        $url="http://1905passport.com/test/rsaSign1?sign=".urlencode($sign_str);
+        $response=file_get_contents($url);
+        echo $response;
+    }
     /**签名
      * [MD5 description]
      */
@@ -18,7 +38,6 @@ class TestController extends Controller
         $sign = md5($data . $key);
         $url="http://1905passport.com/test/md5SignGet?data=".$data.'&sign='.$sign;
         $response=file_get_contents($url);
-
         echo $response;
     }
     /**签名
