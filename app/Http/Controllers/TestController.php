@@ -4,22 +4,54 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
+use GuzzleHttp\Client;
 
 class TestController extends Controller
 {
     /**签名
      * [MD5 description]
      */
-    public function md5()
+    public function md5SignGet()
     {
         $data = "Hello world";
         $key = "1905";
         $sign = md5($data . $key);
-        $url="http://1905passport.com/test/check?data=".$data.'&sign='.$sign;
+        $url="http://1905passport.com/test/md5SignGet?data=".$data.'&sign='.$sign;
         $response=file_get_contents($url);
 
         echo $response;
     }
+    /**签名
+     * [md5Sign2 description]
+     * @return [type] [description]
+     */
+    public function md5SignPost()
+    {
+        $key="fule";     //签名key
+        $order_info = [
+            "order_id" => 'Fl_' . mt_rand(11111,99999),
+            "order_amount" =>mt_rand(11111,99999),
+            "uid" => 1111,
+            "add_time" => time()
+        ];
+        $data_json=json_encode($order_info);
+        //计算签名
+        $sign = md5($data_json,$key);
+        //post 发送数据
+        $client = new Client;
+        $url = 'http://1905passport.com/test/md5SignPost';
+        $response = $client->request("POST",$url,[
+                "form_params" => [
+                    "data" => $data_json,
+                    "sign" => $sign
+                ]
+            ]);
+        //接收响应数据
+        $response_data=$response->getBody();
+        echo $response_data;
+    }
+
+
    	public function alipay()
     {
         $ali_gateway = 'https://openapi.alipaydev.com/gateway.do';  //支付网关

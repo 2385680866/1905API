@@ -15,13 +15,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get("test/check","TestController@md5"); //签名
-
-Route::get("postman","TestController@postman")->middleware("check.auth"); //防刷
-
+//测试
+Route::get("test/md5SignGet","TestController@md5SignGet"); //签名测试 
+Route::get("test/md5SignPost","TestController@md5SignPost"); //签名测试
 Route::get("test/md5","TestController@MD5"); //测试
 
+
+Route::get("postman","TestController@postman")->middleware("check.auth"); //防刷
 Route::get("gitpull","TestController@gitPull"); //自动上线
 Route::get("test/pay","TestController@alipay"); //去支付
 Route::get("test/alipay/return","Alpay\PayController@aliReturn"); //同步
